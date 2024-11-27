@@ -14,7 +14,7 @@ spec:
         app: backend
     spec:
       containers:
-      - name: backend-container
+      - name: wellfed-backend
         image: wellfeddev.azurecr.io/backend:latest
         ports:
         - containerPort: 3001
