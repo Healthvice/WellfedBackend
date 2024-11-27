@@ -8,7 +8,6 @@
         update_cache: yes
         name:
           - python3-pip
-          - jq
         state: present
       become: yes
 
@@ -44,25 +43,13 @@
         chdir: "{{ source_dir }}"
 
     - name: Read package.json
-      command: cat {{ source_dir }}/package.json
-      register: package_json
-
-    - name: Debug package.json content
-      debug:
-        var: package_json.stdout
-
-    - name: Extract version from package.json using jq
-      shell: echo '{{ package_json.stdout }}' | jq -r '.version'
-      register: version_output
-
-    - name: Debug extracted version
-      debug:
-        var: version_output.stdout
-
-    - name: Set version and imagelabel fact
       set_fact:
-        version: "{{ version_output.stdout }}"
-        imagelabel: "{{ version_output.stdout }}"
+        package_json: "{{ lookup('file', source_dir + '/package.json') | from_json }}"
+
+    - name: Extract version from package.json
+      set_fact:
+        version: "{{ package_json.version }}"
+        imagelabel: "{{ package_json.version }}"
 
     - name: Debug version and imagelabel
       debug:
