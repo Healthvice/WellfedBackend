@@ -26,6 +26,10 @@ WORKDIR /usr/src/app
 COPY --from=build /usr/src/app/dist ./dist
 COPY --from=build /usr/src/app/package*.json ./package.json
 COPY --from=build /usr/src/app/node_modules ./node_modules
+COPY docker-entrypoint.sh /usr/local/bin/
+
+# Make the entrypoint script executable
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
 # Set environment variables
 ENV NODE_ENV="production"
@@ -34,5 +38,8 @@ ENV PORT="3001"
 # Expose the application port
 EXPOSE 3001
 
-# Start the built application
+# Use the entrypoint script
+ENTRYPOINT ["docker-entrypoint.sh"]
+
+# Default command to run the application
 CMD ["node", "dist/main.js"]

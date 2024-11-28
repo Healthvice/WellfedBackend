@@ -18,6 +18,8 @@ import { IngredientController } from './modules/ingredient/controller/ingredient
       type: 'mongodb',
       url: 'mongodb+srv://rithvikvelapati:oaQemZKZcKQetcbl@wellfed-cluster.qe51k.mongodb.net/?retryWrites=true&w=majority&appName=WellFed-Cluster',  // Replace with your MongoDB connection string
       useUnifiedTopology: true,
+      ssl: true,
+      port: 3000,
       database: 'WellFed_DB',
       synchronize: true,  // Automatically sync schema with database (not recommended for production)
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
