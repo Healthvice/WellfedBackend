@@ -15,11 +15,14 @@ export class RecipeController {
   // Get a single recipe by ID
   @Get(':id')
   findOne(@Param('id') id: string): Promise<Recipe> {
+    if (!id.match(/^[0-9a-fA-F]{24}$/)) {
+      throw new HttpException('Invalid recipe ID', 400);
+    }
     return this.recipeService.findOne(id);
   }
   
   // Create a new recipe
-  @Post("save-all")
+  @Post('save-all')
   async createAll(@Body() recipeDataList: Partial<Recipe>[]): Promise<boolean> {
     for (const recipeData of recipeDataList) {
       await this.recipeService.create(recipeData);
@@ -28,7 +31,7 @@ export class RecipeController {
   }
 
   // Create a new recipe
-  @Put("update-all")
+  @Put('update-all')
   async updateAll(@Body() recipeDataList: Partial<Recipe>[]): Promise<boolean> {
     for (const recipeData of recipeDataList) {
       await this.recipeService.updateAll(recipeData);
@@ -44,16 +47,19 @@ export class RecipeController {
 
   // Update a recipe by ID
   @Put(':id')
-  update(
-    @Param('id') id: string,
-    @Body() recipeData: Partial<Recipe>,
-  ): Promise<Recipe> {
+  update(@Param('id') id: string, @Body() recipeData: Partial<Recipe>): Promise<Recipe> {
+    if (!id.match(/^[0-9a-fA-F]{24}$/)) {
+      throw new HttpException('Invalid recipe ID', 400);
+    }
     return this.recipeService.update(id, recipeData);
   }
 
   // Delete a recipe by ID
   @Delete(':id')
   remove(@Param('id') id: string): Promise<void> {
+    if (!id.match(/^[0-9a-fA-F]{24}$/)) {
+      throw new HttpException('Invalid recipe ID', 400);
+    }
     return this.recipeService.remove(id);
   }
 }

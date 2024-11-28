@@ -4,13 +4,13 @@ FROM node:18-alpine AS build
 # Set working directory
 WORKDIR /usr/src/app
 
-# Copy package.json, package-lock.json, and tsconfig.json
-COPY package*.json tsconfig.json ./
+# Copy package.json and package-lock.json
+COPY package*.json ./
 
 # Install dependencies
 RUN npm install
 
-# Copy the rest of the application code
+# Copy the application source code
 COPY . .
 
 # Build the application
@@ -22,21 +22,17 @@ FROM node:18-alpine
 # Set working directory
 WORKDIR /usr/src/app
 
-# Install Nest CLI globally in the runtime stage
-RUN npm install -g @nestjs/cli
-
-# Copy only the necessary files from the build stage
+# Copy the built application and required files
 COPY --from=build /usr/src/app/dist ./dist
-COPY --from=build /usr/src/app/package*.json ./
+COPY --from=build /usr/src/app/package*.json ./package.json
 COPY --from=build /usr/src/app/node_modules ./node_modules
-COPY --from=build /usr/src/app/tsconfig.json ./tsconfig.json
 
 # Set environment variables
 ENV NODE_ENV="production"
 ENV PORT="3001"
 
-# Expose the port the app runs on
+# Expose the application port
 EXPOSE 3001
 
-# Start the application
-CMD ["npm", "run", "start:dev"]
+# Start the built application
+CMD ["node", "dist/main.js"]

@@ -16,19 +16,12 @@ import { IngredientController } from './modules/ingredient/controller/ingredient
   imports: [
     TypeOrmModule.forRoot({
       type: 'mongodb',
-      url: 'mongodb+srv://rithvikvelapati:oaQemZKZcKQetcbl@wellfed-cluster.qe51k.mongodb.net/WellFed_DB?retryWrites=true&w=majority',
+      url: 'mongodb+srv://rithvikvelapati:oaQemZKZcKQetcbl@wellfed-cluster.qe51k.mongodb.net/?retryWrites=true&w=majority&appName=WellFed-Cluster',  // Replace with your MongoDB connection string
       useUnifiedTopology: true,
       database: 'WellFed_DB',
-      synchronize: true, // Only in non-production environments
-      logging: true, // Enable for debugging
-      ssl: true, // Ensure SSL is used
-      sslValidate: true, // Enforce SSL validation
-      sslCA: __dirname + '/certificates/ca-certificate.crt', // Optional: Add custom CA if required
+      synchronize: true,  // Automatically sync schema with database (not recommended for production)
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
     }),
-    
-    
-    
     ProfileModule,
     RecipeModule,
     IngredientModule,
