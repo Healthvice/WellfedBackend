@@ -70,12 +70,5 @@
     - name: Debug Docker build result
       debug:
         msg: "{{ docker_build_result.stdout_lines }}"
-
-    - name: Push docker image to ACR (if not already pushed in the build step)
-      command: docker push wellfeddev.azurecr.io/{{ service_name }}:{{ imagelabel }}
-      register: push_result
-      when: docker_build_result.rc == 0
-
-    - name: Debug push result
-      debug:
-        msg: "{{ push_result }}"
+        
+    # Removed the "Push docker image" step, as it's already handled by the build command with --push
