@@ -16,11 +16,13 @@ import { IngredientController } from './modules/ingredient/controller/ingredient
   imports: [
     TypeOrmModule.forRoot({
       type: 'mongodb',
-      url: 'mongodb+srv://rithvikvelapati:oaQemZKZcKQetcbl@wellfed-cluster.qe51k.mongodb.net/?retryWrites=true&w=majority&appName=WellFed-Cluster',  // Replace with your MongoDB connection string
+      url: 'mongodb+srv://rithvikvelapati:oaQemZKZcKQetcbl@wellfed-cluster.qe51k.mongodb.net/WellFed_DB?retryWrites=true&w=majority&tls=true&tlsAllowInvalidCertificates=true',
       useUnifiedTopology: true,
       ssl: true,
-      port: 3000,
-      database: 'WellFed_DB',
+      extra: {
+        tlsCAFile: 'C:\\Users\\velap\\Documents\\WellfedBackend\\ca-certificates.crt', 
+        tlsAllowInvalidCertificates: true, // For testing purposes
+      },
       synchronize: true,  // Automatically sync schema with database (not recommended for production)
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
     }),
