@@ -60,8 +60,8 @@
       register: buildx_setup
       failed_when: buildx_setup.rc != 0
 
-    - name: Build docker image for amd64 and arm64
-      command: docker buildx build --platform linux/amd64,linux/arm64 -t {{ service_name }}:{{ imagelabel }} .
+    - name: Build docker image for amd64 and arm64 and push to ACR
+      command: docker buildx build --platform linux/amd64,linux/arm64 -t wellfeddev.azurecr.io/{{ service_name }}:{{ imagelabel }} --push .
       args:
         chdir: "{{ source_dir }}"
       register: docker_build_result
@@ -71,17 +71,10 @@
       debug:
         msg: "{{ docker_build_result.stdout_lines }}"
 
-    - name: Tag docker image for amd64 and arm64
-      command: docker tag {{ service_name }}:{{ imagelabel }} wellfeddev.azurecr.io/{{ service_name }}:{{ imagelabel }}
-      register: tag_result
-
-    - name: Debug tag result
-      debug:
-        msg: "{{ tag_result }}"
-
-    - name: Push docker image to ACR
+    - name: Push docker image to ACR (if not already pushed in the build step)
       command: docker push wellfeddev.azurecr.io/{{ service_name }}:{{ imagelabel }}
       register: push_result
+      when: docker_build_result.rc == 0
 
     - name: Debug push result
       debug:
