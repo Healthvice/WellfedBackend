@@ -18,15 +18,9 @@ spec:
         image: wellfeddev.azurecr.io/wellfed-backend:latest
         imagePullPolicy: Always
         ports:
-<<<<<<< HEAD
         - containerPort: 3001 # Matches the port backend is listening on
         env:
         - name: NODE_ENV
           value: "production"
         - name: PORT
           value: "3001"
-=======
-        - containerPort: 3001
-      imagePullSecrets:
-      - name: acr-secret
->>>>>>> 4a99017676eebb71014a5cb16748afe87c23ccd2
