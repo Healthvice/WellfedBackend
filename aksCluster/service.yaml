@@ -10,4 +10,4 @@ spec:
     - protocol: TCP
       port: 80
       targetPort: 3001
-  type: LoadBalancer
+  type: ClusterIP # Internal service type for in-cluster communication
