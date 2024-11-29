@@ -16,5 +16,8 @@ spec:
       containers:
       - name: wellfed-backend
         image: wellfeddev.azurecr.io/wellfed-backend:latest
+        imagePullPolicy: Always
         ports:
         - containerPort: 3001
+      imagePullSecrets:
+      - name: acr-secret
