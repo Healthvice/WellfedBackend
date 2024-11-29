@@ -55,8 +55,8 @@
       debug:
         msg: "version: {{ version }}, imagelabel: {{ imagelabel }}"
 
-    - name: Build docker image
-      command: docker build -t {{ service_name }} .
+    - name: Build docker image for arm64
+      command: docker buildx build --platform linux/arm64 -t {{ service_name }}:{{ imagelabel }} .
       args:
         chdir: "{{ source_dir }}"
       register: docker_build_result
@@ -66,8 +66,8 @@
       debug:
         msg: "{{ docker_build_result.stdout_lines }}"
 
-    - name: Tag docker image
-      command: docker tag {{ service_name }} wellfeddev.azurecr.io/{{ service_name }}:{{ imagelabel }}
+    - name: Tag docker image for arm64
+      command: docker tag {{ service_name }}:{{ imagelabel }} wellfeddev.azurecr.io/{{ service_name }}:{{ imagelabel }}
       register: tag_result
 
     - name: Debug tag result
