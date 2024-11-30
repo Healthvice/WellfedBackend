@@ -1,5 +1,5 @@
 - name: Continuous Deployment
-  hosts: localhost
+  hosts: "localhost"
   connection: local
 
   vars:
@@ -55,7 +55,7 @@
 
     - name: Pull arm64 image from ACR
       command: >
-        docker pull wellfeddev.azurecr.io/{{ service_name }}:{{ version }}-arm64
+        docker pull wellfeddev.azurecr.io/wellfed-backend:{{ version }}-arm64  # Pull the image with arm64 tag
       register: docker_pull_result
       failed_when: docker_pull_result.rc != 0
 
