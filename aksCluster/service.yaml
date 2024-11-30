@@ -8,6 +8,6 @@ spec:
     app: backend
   ports:
     - protocol: TCP
-      port: 80
-      targetPort: 3001
-  type: ClusterIP # Internal service type for in-cluster communication
+      port: 80            # The port that will be accessible externally
+      targetPort: 3001    # The port the backend is actually listening on
+  type: LoadBalancer     # Exposing the service via LoadBalancer
