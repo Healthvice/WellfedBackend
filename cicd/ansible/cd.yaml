@@ -1,10 +1,8 @@
 - name: Continuous Deployment
   hosts: "localhost"
   connection: local
-
   vars:
     version: "{{ version }}"  # Explicitly set version variable
-
   tasks:
     - set_fact:
         git_username: "{{ lookup('env', 'git_username') }}"
@@ -20,10 +18,6 @@
         aks_cluster: "{{ lookup('env', 'aks_cluster') }}"
         resource_group: "{{ lookup('env', 'resource_group') }}"
 
-    - name: Debug version variable
-      debug:
-        msg: "Version: {{ version }}"
-
     - name: Login to Azure using Service Principal
       command: >
         az login
@@ -35,27 +29,12 @@
     - name: Set subscription to current directory
       command: az account set --subscription {{ subscription_id }}
 
-    - name: List AKS clusters in resource group
-      command: az aks list --resource-group {{ resource_group }}
-      register: aks_list_result
-
-    - name: Debug AKS clusters
-      debug:
-        var: aks_list_result.stdout
-
-    - name: Pull AKS cluster config
-      command: >
-        az aks get-credentials --resource-group {{ resource_group }} --name {{ aks_cluster }}
-      register: aks_credentials_result
-      failed_when: aks_credentials_result.rc != 0
-
-    - name: Authenticate with ACR
-      command: >
-        az acr login --name {{ acr_username }}
+    - name: Login to ACR registry
+      shell: echo "{{ service_principal_secret }}" | docker login wellfeddev.azurecr.io --username "{{ service_principal_id }}" --password-stdin
 
     - name: Pull arm64 image from ACR
       command: >
-        docker pull wellfeddev.azurecr.io/wellfed-backend:{{ version }}-arm64  # Pull the image with arm64 tag
+        docker pull wellfeddev.azurecr.io/wellfed-backend:{{ version }}-arm64
       register: docker_pull_result
       failed_when: docker_pull_result.rc != 0
 
