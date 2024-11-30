@@ -53,9 +53,9 @@
       command: >
         az acr login --name {{ acr_username }}
 
-    - name: Pull image from ACR
+    - name: Pull arm64 image from ACR
       command: >
-        docker pull wellfeddev.azurecr.io/wellfed-backend:latest
+        docker pull wellfeddev.azurecr.io/wellfed-backend:{{ version }}-arm64
       register: docker_pull_result
       failed_when: docker_pull_result.rc != 0
 
