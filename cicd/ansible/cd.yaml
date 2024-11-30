@@ -34,7 +34,7 @@
 
     - name: Pull arm64 image from ACR
       command: >
-        docker pull wellfeddev.azurecr.io/wellfed-backend:latest-arm64
+        docker pull --platform linux/arm64 wellfeddev.azurecr.io/wellfed-backend:latest-arm64
       register: docker_pull_result
       failed_when: docker_pull_result.rc != 0
 
