@@ -1,10 +1,7 @@
 
 name: $(Date:yyyyMMdd)$(Rev:.r)-$(Build.SourceBranchName)
 
-trigger: 
-  branches: 
-    include: 
-      - dummy_main
+trigger: none
 
 variables: 
   - group: wellfedbackend-variablegroup
