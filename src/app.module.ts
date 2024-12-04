@@ -22,6 +22,8 @@ import { IngredientController } from './modules/ingredient/controller/ingredient
       synchronize: true,  // Automatically sync schema with database (not recommended for production)
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
     }),
+
+    // Import feature modules
     ProfileModule,
     RecipeModule,
     IngredientModule,
@@ -31,7 +33,7 @@ import { IngredientController } from './modules/ingredient/controller/ingredient
     SavedRecipesModule,
     ToolModule,
   ],
-  controllers: [AppController, IngredientController],
-  providers: [AppService],
+  controllers: [AppController, IngredientController], // Define application controllers
+  providers: [AppService], // Register application services
 })
 export class AppModule {}
