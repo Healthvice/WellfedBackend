@@ -1,19 +1,18 @@
-
 name: $(Date:yyyyMMdd)$(Rev:.r)-$(Build.SourceBranchName)
 
 trigger: none
+  #branches:
+    #include:
+      #- main
+      # - dummy-main
+
+pr: none
 
 variables: 
   - group: wellfedbackend-variablegroup
 
-parameters: 
-  - name: version 
-    displayName: Version 
-    type: string 
-    default: 'latest'
-
 jobs:
-  - job: Wellfed_backend_CD_pipeline
+  - job: Wellfed_backend_CI_pipeline
     pool:
       vmImage: 'ubuntu-latest'
 
@@ -57,29 +56,8 @@ jobs:
       #    script: |
       #      export $(cat $(Pipeline.Workspace)/decrypted/backend.yaml | xargs)
       #      export $(cat $(Pipeline.Workspace)/decrypted/frontend.yaml | xargs)
-      - script: |
-          echo "Version: $(version)"
-          VERSION=$(version)
-          echo "VERSION: $VERSION"
-        displayName: "Debug Version Parameter"
-
       - task: Bash@3
         displayName: "Run Ansible Playbook"
-        inputs:
-          targetType: 'inline'
-          script: |
-            set -e  # Exit on error
-            echo "Current Directory:"
-            pwd
-            VERSION=$(version)
-            echo "VERSION: $VERSION"  # Debug version parameter
-            cd $(Build.SourcesDirectory)/aksCluster
-            echo "Current Directory after changing:"
-            pwd
-            echo "Directory Listing:"
-            ls -lrt
-            echo "Running Ansible Playbook:"
-            ansible-playbook ../cicd/ansible/cd.yaml -i "localhost," -e version=$VERSION -v
         env:
           git_username: "$(git_username)"
           git_password: "$(git_password)"
@@ -91,6 +69,12 @@ jobs:
           tenant_id: "$(tenant_id)"
           service_name: "$(service_name)"
           source_dir: "$(Build.SourcesDirectory)"
-          aks_cluster: "$(aks_cluster)"
-          resource_group: "$(resource_group)"
-          version: "$(version)"
+        inputs:
+          targetType: inline
+          script: |
+            pwd
+            python3 --version
+            pip --version
+            pip3 --version
+            ls -lrt
+            ansible-playbook $(Build.SourcesDirectory)/cicd/ansible/ci.yaml -i "localhost," -v
