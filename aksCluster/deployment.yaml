@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wellfed-deploy
+  namespace: wellfed-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+      - name: wellfed-backend
+        image: wellfeddev.azurecr.io/wellfed-backend:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 3001 # Matches the port backend is listening on
+        env:
+        - name: NODE_ENV
+          value: "production"
+        - name: PORT
+          value: "3001"

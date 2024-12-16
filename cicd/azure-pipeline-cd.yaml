@@ -1,0 +1,96 @@
+
+name: $(Date:yyyyMMdd)$(Rev:.r)-$(Build.SourceBranchName)
+
+trigger: none
+
+variables: 
+  - group: wellfedbackend-variablegroup
+
+parameters: 
+  - name: version 
+    displayName: Version 
+    type: string 
+    default: 'latest'
+
+jobs:
+  - job: Wellfed_backend_CD_pipeline
+    pool:
+      vmImage: 'ubuntu-latest'
+
+    steps:
+      # Step 1: Install SOPS
+      #- task: Bash@3
+      #  displayName: "Install SOPS"
+      #  inputs:
+      #    targetType: inline
+      #    script: |
+      #      sudo apt-get update
+      #      sudo apt-get install -y sops
+
+      # Step 2: Clone the AKS-CONFIG Repository
+      #- task: Bash@3
+      #  displayName: "Clone Variables Repository"
+      #  env:
+      #   GIT_USERNAME: "$(git_username)"
+      #    GIT_PASSWORD: "$(git_password)"
+      #    REPO_URL: "https://github.com/your-org/AKS-CONFIG"
+      #  inputs:
+      #    targetType: inline
+      #    script: |
+      #      git clone https://$(GIT_USERNAME):$(GIT_PASSWORD)@github.com/your-org/AKS-CONFIG aks-config
+
+      # Step 3: Decrypt Encrypted Files
+      #- task: Bash@3
+      #  displayName: "Decrypt Encrypted Variables"
+      #  inputs:
+      #    targetType: inline
+      #    script: |
+      #      mkdir -p $(Pipeline.Workspace)/decrypted
+      #      sops -d AKS-config/credentials/backend.enc.yaml > $(Pipeline.Workspace)/decrypted/backend.yaml
+      #      sops -d AKS-config/credentials/frontend.enc.yaml > $(Pipeline.Workspace)/decrypted/frontend.yaml
+
+      # Step 4: Export Variables as Environment Variables
+      #- task: Bash@3
+      #  displayName: "Export Variables from Decrypted Files"
+      #  inputs:
+      #    targetType: inline
+      #    script: |
+      #      export $(cat $(Pipeline.Workspace)/decrypted/backend.yaml | xargs)
+      #      export $(cat $(Pipeline.Workspace)/decrypted/frontend.yaml | xargs)
+      - script: |
+          echo "Version: $(version)"
+          VERSION=$(version)
+          echo "VERSION: $VERSION"
+        displayName: "Debug Version Parameter"
+
+      - task: Bash@3
+        displayName: "Run Ansible Playbook"
+        inputs:
+          targetType: 'inline'
+          script: |
+            set -e  # Exit on error
+            echo "Current Directory:"
+            pwd
+            VERSION=$(version)
+            echo "VERSION: $VERSION"  # Debug version parameter
+            cd $(Build.SourcesDirectory)/aksCluster
+            echo "Current Directory after changing:"
+            pwd
+            echo "Directory Listing:"
+            ls -lrt
+            echo "Running Ansible Playbook:"
+            ansible-playbook ../cicd/ansible/cd.yaml -i "localhost," -e version=$VERSION -v
+        env:
+          git_username: "$(git_username)"
+          git_password: "$(git_password)"
+          subscription_id: "$(subscription_id)"
+          service_principal_id: "$(service_principal_id)"
+          service_principal_secret: "$(service_principal_secret)"
+          acr_registry_url: "$(acr_registry_url)"
+          acr_username: "$(acr_username)"
+          tenant_id: "$(tenant_id)"
+          service_name: "$(service_name)"
+          source_dir: "$(Build.SourcesDirectory)"
+          aks_cluster: "$(aks_cluster)"
+          resource_group: "$(resource_group)"
+          version: "$(version)"

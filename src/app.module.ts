@@ -11,14 +11,24 @@ import { ReviewModule } from './modules/review/review.module';
 import { SavedRecipesModule } from './modules/savedrecipes/savedrecipes.module';
 import { ToolModule } from './modules/tool/tool.module';
 import { IngredientController } from './modules/ingredient/controller/ingredient.controller';
+import { FriendsModule } from './modules/friends/friends.module';
+import { FriendsRequestsModule } from './modules/friends-requests/friends-requests.module';
+import { OnlineUsersModule } from './modules/online-users/online-users.module';
+import { FriendRequestGateway } from './gateway/friend-request.gateway';
+import { GatewayModule } from './gateway/gateway.module';
+import { MealsModule } from './modules/meals/meals.module';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot({
       type: 'mongodb',
-      url: 'mongodb+srv://rithvikvelapati:oaQemZKZcKQetcbl@wellfed-cluster.qe51k.mongodb.net/?retryWrites=true&w=majority&appName=WellFed-Cluster',  // Replace with your MongoDB connection string
+      url: 'mongodb+srv://rithvikvelapati:oaQemZKZcKQetcbl@wellfed-cluster.qe51k.mongodb.net/WellFed_DB?retryWrites=true&w=majority&tls=true&tlsAllowInvalidCertificates=true',
       useUnifiedTopology: true,
-      database: 'WellFed_DB',
+      ssl: true,
+      extra: {
+        tlsCAFile: 'C:\\Users\\velap\\Documents\\WellfedBackend\\ca-certificates.crt', 
+        tlsAllowInvalidCertificates: true, // For testing purposes
+      },
       synchronize: true,  // Automatically sync schema with database (not recommended for production)
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
     }),
@@ -32,6 +42,10 @@ import { IngredientController } from './modules/ingredient/controller/ingredient
     ReviewModule,
     SavedRecipesModule,
     ToolModule,
+    FriendsModule,
+    FriendsRequestsModule,
+    OnlineUsersModule,
+    MealsModule
   ],
   controllers: [AppController, IngredientController], // Define application controllers
   providers: [AppService], // Register application services

@@ -1,6 +1,6 @@
 {
   "name": "wellfed",
-  "version": "0.0.1",
+  "version": "latest",
   "description": "",
   "author": "",
   "private": true,
@@ -24,10 +24,13 @@
     "@nestjs/core": "^10.0.0",
     "@nestjs/mongoose": "^10.0.10",
     "@nestjs/platform-express": "^10.0.0",
+    "@nestjs/platform-socket.io": "^10.4.15",
     "@nestjs/typeorm": "^10.0.2",
+    "@nestjs/websockets": "^10.4.15",
     "mongodb": "^5.9.2",
     "reflect-metadata": "^0.2.0",
     "rxjs": "^7.8.1",
+    "socket.io": "^4.8.1",
     "typeorm": "^0.3.20"
   },
   "devDependencies": {
