@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
+  // Create a NestJS application instance using the root module
   const app = await NestFactory.create(AppModule);
 
   // Enable CORS for the frontend's public IP
@@ -12,5 +13,8 @@ async function bootstrap() {
   });
 
   await app.listen(3001); // Ensure this matches the backend's containerPort
+
 }
+
+// Bootstrap the application
 bootstrap();
