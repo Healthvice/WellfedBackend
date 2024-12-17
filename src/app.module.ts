@@ -11,6 +11,12 @@ import { ReviewModule } from './modules/review/review.module';
 import { SavedRecipesModule } from './modules/savedrecipes/savedrecipes.module';
 import { ToolModule } from './modules/tool/tool.module';
 import { IngredientController } from './modules/ingredient/controller/ingredient.controller';
+import { FriendsModule } from './modules/friends/friends.module';
+import { FriendsRequestsModule } from './modules/friends-requests/friends-requests.module';
+import { OnlineUsersModule } from './modules/online-users/online-users.module';
+import { FriendRequestGateway } from './gateway/friend-request.gateway';
+import { GatewayModule } from './gateway/gateway.module';
+import { MealsModule } from './modules/meals/meals.module';
 
 @Module({
   imports: [
@@ -34,6 +40,10 @@ import { IngredientController } from './modules/ingredient/controller/ingredient
     ReviewModule,
     SavedRecipesModule,
     ToolModule,
+    FriendsModule,
+    FriendsRequestsModule,
+    OnlineUsersModule,
+    MealsModule
   ],
   controllers: [AppController, IngredientController],
   providers: [AppService],

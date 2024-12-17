@@ -56,8 +56,6 @@ export class FriendRequestGateway
 
     }
 
-    
-
     // Emit a friend request event
 
     emitFriendRequest(userId: string, data: any) {

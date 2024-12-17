@@ -56,4 +56,7 @@ export class Profile {
   
     @Column({ type: 'int', default: 0 })
     familyMembers: number;
+
+    @Column({ type: 'varchar', length: 50 })
+    status: string;
 }
