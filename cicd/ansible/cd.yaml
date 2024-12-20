@@ -55,7 +55,7 @@
 
     - name: Pull image from ACR
       command: >
-        docker pull wellfeddev.azurecr.io/wellfed-backend:latest
+        docker pull wellfeddev.azurecr.io/wellfed-backend:0.0.1
       register: docker_pull_result
       failed_when: docker_pull_result.rc != 0
 

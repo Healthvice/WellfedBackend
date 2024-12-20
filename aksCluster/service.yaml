@@ -3,11 +3,13 @@ kind: Service
 metadata:
   name: wellfed-service
   namespace: wellfed-backend
+  annotations:
+    service.beta.kubernetes.io/azure-load-balancer-internal: "true" # Internal Load Balancer
 spec:
   selector:
     app: backend
   ports:
     - protocol: TCP
-      port: 80            # The port that will be accessible externally
-      targetPort: 3001    # The port the backend is actually listening on
-  type: LoadBalancer     # Exposing the service via LoadBalancer
+      port: 80
+      targetPort: 3001
+  type: LoadBalancer
