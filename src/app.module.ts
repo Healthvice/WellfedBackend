@@ -32,6 +32,8 @@ import { MealsModule } from './modules/meals/meals.module';
       synchronize: true,  // Automatically sync schema with database (not recommended for production)
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
     }),
+
+    // Import feature modules
     ProfileModule,
     RecipeModule,
     IngredientModule,
@@ -45,7 +47,7 @@ import { MealsModule } from './modules/meals/meals.module';
     OnlineUsersModule,
     MealsModule
   ],
-  controllers: [AppController, IngredientController],
-  providers: [AppService],
+  controllers: [AppController, IngredientController], // Define application controllers
+  providers: [AppService], // Register application services
 })
 export class AppModule {}
